@@ -1,53 +1,35 @@
-// Importando hooks do React
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
-// Importando componentes criados
+// importação das páginas
+import Home from "./pages/Home";
+import ProductDetail from "./pages/ProductDetail";
+import Categorias from "./pages/Categorias";
+import Carrinho from "./pages/Carrinho";
+
+// import do header (menu)
 import Header from "./components/Header";
-import ProductCard from "./components/ProductCard";
 
 function App() {
-
-  // Estado que armazenará os produtos vindos da API
-  const [produtos, setProdutos] = useState([]);
-
-  // useEffect executa quando a página carrega
-  // Aqui fazemos a requisição para a Fake Store API
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
-      .then(data => {
-
-        // salvando os produtos no estado
-        setProdutos(data);
-
-      });
-  }, []);
-
   return (
-    <div>
-
-      {/* Header da aplicação */}
+    <>
+      {/* Header aparece em todas as páginas */}
       <Header />
 
-      <h1>Catálogo de Produtos</h1>
+      {/* sistema de rotas da aplicação */}
+      <Routes>
 
-      {/* Grid que irá mostrar os produtos */}
-      <div className="grid">
+        {/* página inicial */}
+        <Route path="/" element={<Home />} />
 
-        {/* percorre todos os produtos retornados pela API */}
-        {produtos.map(produto => (
+        {/* página de detalhe de produto (usa id dinâmico) */}
+        <Route path="/produto/:id" element={<ProductDetail />} />
 
-          // criando um card para cada produto
-          <ProductCard
-            key={produto.id}
-            produto={produto}
-          />
+        {/* páginas adicionais */}
+        <Route path="/categorias" element={<Categorias />} />
+        <Route path="/carrinho" element={<Carrinho />} />
 
-        ))}
-
-      </div>
-
-    </div>
+      </Routes>
+    </>
   );
 }
 

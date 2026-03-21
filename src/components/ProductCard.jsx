@@ -1,25 +1,22 @@
-// Componente responsável por mostrar um produto individual
+import { Link } from "react-router-dom";
 
 function ProductCard({ produto }) {
-    return (
-      <div className="card">
-  
-        {/* imagem do produto */}
+  return (
+    <div className="card">
+
+      {/* ao clicar, vai para a página de detalhe */}
+      <Link to={`/produto/${produto.id}`}>
         <img src={produto.image} alt={produto.title} />
-  
+
         {/* título do produto */}
         <h3>{produto.title}</h3>
-  
-        {/* preço formatado em Real */}
-        <p className="price">
-          {produto.price.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-          })}
-        </p>
-  
-      </div>
-    );
-  }
-  
-  export default ProductCard;
+      </Link>
+
+      {/* preço formatado */}
+      <p>R$ {produto.price.toFixed(2)}</p>
+
+    </div>
+  );
+}
+
+export default ProductCard;

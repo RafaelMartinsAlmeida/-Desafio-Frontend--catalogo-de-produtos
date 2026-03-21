@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+// importa o BrowserRouter para habilitar navegação entre páginas
+import { BrowserRouter } from "react-router-dom";
+
+// importa o CSS global
+import "./index.css";
+
+// aqui é onde a aplicação React é renderizada
+ReactDOM.createRoot(document.getElementById("root")).render(
+  // envolve o App com o Router para permitir rotas
+  <BrowserRouter>
     <App />
-  </StrictMode>,
-)
+  </BrowserRouter>
+);

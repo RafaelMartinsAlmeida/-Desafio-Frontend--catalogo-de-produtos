@@ -1,21 +1,20 @@
-// Header do site (logo + menu simples)
+import { Link } from "react-router-dom";
 
 function Header() {
-    return (
-      <header className="header">
-  
-        {/* Logo do projeto */}
-        <h2 className="logo">🛍️ FakeStore</h2>
-  
-        {/* Menu simples */}
-        <nav>
-          <a href="#">Produtos</a>
-          <a href="#">Categorias</a>
-          <a href="#">Carrinho</a>
-        </nav>
-  
-      </header>
-    );
-  }
-  
-  export default Header;
+  return (
+    <header>
+      {/* nome/logo do site */}
+      <h2>🛍️ FakeStore</h2>
+
+      {/* navegação entre páginas */}
+      <nav>
+        {/* Link evita recarregar a página */}
+        <Link to="/">Produtos</Link>
+        <Link to="/categorias">Categorias</Link>
+        <Link to="/carrinho">Carrinho</Link>
+      </nav>
+    </header>
+  );
+}
+
+export default Header;
