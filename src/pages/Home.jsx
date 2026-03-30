@@ -14,17 +14,27 @@ function Home() {
   // controle de carregamento (UX)
   const [loading, setLoading] = useState(true);
 
+  // estado de erro (NOVO)
+  const [erro, setErro] = useState(null);
+
   // esse useEffect roda uma vez quando a página carrega
   // aqui eu busco todos os produtos da API
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
+      .then(res => {
+        // verifica se deu erro na requisição
+        if (!res.ok) {
+          throw new Error("Erro ao buscar produtos");
+        }
+        return res.json();
+      })
       .then(data => {
-        setProdutos(data); // salva os produtos no estado
-        setLoading(false); // finaliza o loading
+        setProdutos(data);
+        setLoading(false);
       })
       .catch(err => {
         console.log("Erro ao buscar produtos:", err);
+        setErro("Erro ao carregar produtos"); // NOVO
         setLoading(false);
       });
   }, []);
@@ -34,7 +44,7 @@ function Home() {
     fetch("https://fakestoreapi.com/products/categories")
       .then(res => res.json())
       .then(data => {
-        setCategorias(data); // salva as categorias
+        setCategorias(data);
       })
       .catch(err => {
         console.log("Erro ao buscar categorias:", err);
@@ -44,12 +54,17 @@ function Home() {
   // aqui faço o filtro dos produtos baseado na categoria selecionada
   const produtosFiltrados =
     categoriaSelecionada === "all"
-      ? produtos // se for "all", mostra tudo
+      ? produtos
       : produtos.filter(p => p.category === categoriaSelecionada);
 
   // enquanto carrega
   if (loading) {
     return <p>Carregando produtos...</p>;
+  }
+
+  // se deu erro
+  if (erro) {
+    return <p>{erro}</p>;
   }
 
   return (
@@ -60,7 +75,10 @@ function Home() {
       <div className="filtro">
 
         {/* botão para mostrar todos */}
-        <button onClick={() => setCategoriaSelecionada("all")}>
+        <button
+          onClick={() => setCategoriaSelecionada("all")}
+          className={categoriaSelecionada === "all" ? "ativo" : ""}
+        >
           Todos
         </button>
 
@@ -69,6 +87,7 @@ function Home() {
           <button
             key={cat}
             onClick={() => setCategoriaSelecionada(cat)}
+            className={categoriaSelecionada === cat ? "ativo" : ""}
           >
             {cat}
           </button>
