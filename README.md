@@ -1,16 +1,80 @@
-# React + Vite
+# 🛍️ DevStore — Catálogo de Produtos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto desenvolvido como desafio de frontend, com foco em **organização, experiência do usuário e boas práticas**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Tecnologias utilizadas
 
-## React Compiler
+* React
+* React Router DOM
+* Context API
+* CSS3
+* Framer Motion
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📦 Funcionalidades
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* ✔ Listagem de produtos via API
+* ✔ Filtro por categorias
+* ✔ Busca em tempo real
+* ✔ Página de detalhes do produto
+* ✔ Carrinho de compras (Context API)
+* ✔ Controle de quantidade
+* ✔ Persistência com localStorage
+* ✔ Animações de transição entre páginas
+* ✔ Loading skeleton (carregamento elegante)
+* ✔ Dark Mode
+
+---
+
+## 🎨 Experiência do usuário (UX)
+
+O projeto foi refinado para oferecer uma experiência mais próxima de aplicações reais:
+
+* Interface limpa e organizada
+* Feedback visual em interações (hover, clique)
+* Transições suaves entre páginas
+* Layout responsivo estilo e-commerce
+* Carregamento sem “quebras” visuais
+
+---
+
+## 🛠️ Como rodar o projeto
+
+```bash
+# clonar repositório
+git clone https://github.com/RafaelMartinsAlmeida/-Desafio-Frontend--catalogo-de-produtos.git
+
+# entrar na pasta
+cd -Desafio-Frontend--catalogo-de-produtos
+
+# instalar dependências
+npm install
+
+# rodar projeto
+npm run dev
+```
+
+---
+
+## 📌 Observações
+
+* Os produtos são fornecidos pela FakeStore API
+* O projeto foi desenvolvido com foco em aprendizado, mas com estrutura próxima de aplicações reais
+
+---
+
+## 💡 Possíveis melhorias futuras
+
+* Integração com backend real
+* Sistema de autenticação
+* Checkout completo
+* Favoritos (wishlist)
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por Rafael Martins
