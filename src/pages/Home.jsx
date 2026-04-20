@@ -1,80 +1,79 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import PageWrapper from "../components/PageWrapper";
 
 function Home() {
-  // estado que guarda todos os produtos vindos da API
+
   const [produtos, setProdutos] = useState([]);
-
-  // estado que guarda as categorias
   const [categorias, setCategorias] = useState([]);
-
-  // controla qual categoria o usuário selecionou
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("all");
-
-  // controle de carregamento (UX)
+  const [busca, setBusca] = useState("");
   const [loading, setLoading] = useState(true);
-
-  // estado de erro (NOVO)
   const [erro, setErro] = useState(null);
 
-  // esse useEffect roda uma vez quando a página carrega
-  // aqui eu busco todos os produtos da API
+  // busca produtos
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
-      .then(res => {
-        // verifica se deu erro na requisição
-        if (!res.ok) {
-          throw new Error("Erro ao buscar produtos");
-        }
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         setProdutos(data);
         setLoading(false);
       })
-      .catch(err => {
-        console.log("Erro ao buscar produtos:", err);
-        setErro("Erro ao carregar produtos"); // NOVO
+      .catch(() => {
+        setErro("Erro ao carregar produtos");
         setLoading(false);
       });
   }, []);
 
-  // esse useEffect busca as categorias da API
+  // busca categorias
   useEffect(() => {
     fetch("https://fakestoreapi.com/products/categories")
       .then(res => res.json())
-      .then(data => {
-        setCategorias(data);
-      })
-      .catch(err => {
-        console.log("Erro ao buscar categorias:", err);
-      });
+      .then(data => setCategorias(data));
   }, []);
 
-  // aqui faço o filtro dos produtos baseado na categoria selecionada
-  const produtosFiltrados =
-    categoriaSelecionada === "all"
-      ? produtos
-      : produtos.filter(p => p.category === categoriaSelecionada);
+  // filtro combinado
+  const produtosFiltrados = produtos.filter(produto => {
+    const matchCategoria =
+      categoriaSelecionada === "all" ||
+      produto.category === categoriaSelecionada;
 
-  // enquanto carrega
+    const matchBusca = produto.title
+      .toLowerCase()
+      .includes(busca.toLowerCase());
+
+    return matchCategoria && matchBusca;
+  });
+
+  // 🔥 SKELETON LOADING
   if (loading) {
-    return <p>Carregando produtos...</p>;
+    return (
+      <PageWrapper>
+        <div className="produtos-grid">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="card skeleton skeleton-card"></div>
+          ))}
+        </div>
+      </PageWrapper>
+    );
   }
 
-  // se deu erro
-  if (erro) {
-    return <p>{erro}</p>;
-  }
+  if (erro) return <p>{erro}</p>;
 
   return (
-    <div>
-      <h1>Catálogo de Produtos</h1>
+    <PageWrapper>
+      <h1>Catalogo de Produtos</h1>
 
-      {/* filtro de categorias */}
+      {/* busca */}
+      <input
+        type="text"
+        placeholder="Buscar produto..."
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+      />
+
+      {/* categorias */}
       <div className="filtro">
-
-        {/* botão para mostrar todos */}
         <button
           onClick={() => setCategoriaSelecionada("all")}
           className={categoriaSelecionada === "all" ? "ativo" : ""}
@@ -82,7 +81,6 @@ function Home() {
           Todos
         </button>
 
-        {/* renderiza um botão para cada categoria */}
         {categorias.map(cat => (
           <button
             key={cat}
@@ -92,16 +90,15 @@ function Home() {
             {cat}
           </button>
         ))}
-
       </div>
 
-      {/* grid de produtos */}
+      {/* produtos */}
       <div className="produtos-grid">
         {produtosFiltrados.map(produto => (
           <ProductCard key={produto.id} produto={produto} />
         ))}
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 

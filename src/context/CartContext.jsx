@@ -1,56 +1,78 @@
-// Importa funções do React
+// Contexto global do carrinho (compartilhado entre toda a aplicação)
 import { createContext, useState, useEffect } from "react";
 
-// Cria o contexto (tipo um "global")
 export const CartContext = createContext();
 
-// Provider é o que vai envolver a aplicação
 export const CartProvider = ({ children }) => {
 
-  // carrega o carrinho salvo no navegador (se existir)
-  const [cart, setCart] = useState(() => {
-    const carrinhoSalvo = localStorage.getItem("cart");
-    return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
-  });
+  const [cart, setCart] = useState([]);
 
-  // sempre que o carrinho mudar, salva no localStorage
+  // Carrega o carrinho salvo no navegador ao iniciar a aplicação
+  useEffect(() => {
+    const carrinhoSalvo = localStorage.getItem("cart");
+
+    if (carrinhoSalvo) {
+      try {
+        setCart(JSON.parse(carrinhoSalvo));
+      } catch {
+        setCart([]);
+      }
+    }
+  }, []);
+
+  // Salva o carrinho sempre que houver alteração (persistência)
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Função para adicionar produto
+  // Adiciona produto ao carrinho (incrementa se já existir)
   const addToCart = (product) => {
+    const existe = cart.find(item => item.id === product.id);
 
-    // Verifica se o produto já existe no carrinho
-    const produtoExiste = cart.find(item => item.id === product.id);
-
-    if (produtoExiste) {
-      // Se já existe → aumenta quantidade
-      const novoCarrinho = cart.map(item =>
+    if (existe) {
+      setCart(cart.map(item =>
         item.id === product.id
           ? { ...item, quantidade: item.quantidade + 1 }
           : item
-      );
-
-      setCart(novoCarrinho);
+      ));
     } else {
-      // Se não existe → adiciona com quantidade 1
       setCart([...cart, { ...product, quantidade: 1 }]);
     }
   };
 
-  // Função para remover produto
-  const removeFromCart = (id) => {
-    const novoCarrinho = cart.filter(item => item.id !== id);
-    setCart(novoCarrinho);
+  // Controle de quantidade
+  const increase = (id) => {
+    setCart(cart.map(item =>
+      item.id === id
+        ? { ...item, quantidade: item.quantidade + 1 }
+        : item
+    ));
   };
 
-  // Função para limpar carrinho
+  const decrease = (id) => {
+    setCart(cart.map(item =>
+      item.id === id
+        ? {
+            ...item,
+            quantidade: item.quantidade > 1
+              ? item.quantidade - 1
+              : 1
+          }
+        : item
+    ));
+  };
+
+  // Remove produto completamente do carrinho
+  const removeFromCart = (id) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
+
+  // Limpa todo o carrinho
   const clearCart = () => {
     setCart([]);
   };
 
-  // Função para calcular total
+  // Calcula o valor total da compra
   const getTotal = () => {
     return cart.reduce((total, item) => {
       return total + item.price * item.quantidade;
@@ -58,11 +80,12 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    // Disponibiliza tudo globalmente
     <CartContext.Provider
       value={{
         cart,
         addToCart,
+        increase,
+        decrease,
         removeFromCart,
         clearCart,
         getTotal

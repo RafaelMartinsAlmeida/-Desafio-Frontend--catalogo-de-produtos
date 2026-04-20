@@ -3,44 +3,60 @@ import { CartContext } from "../context/CartContext";
 
 function Carrinho() {
 
-  // pega tudo do contexto
-  const { cart, removeFromCart, clearCart, getTotal } = useContext(CartContext);
+  const {
+    cart,
+    increase,
+    decrease,
+    removeFromCart,
+    clearCart,
+    getTotal
+  } = useContext(CartContext);
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>Meu Carrinho</h1>
 
-      {/* se estiver vazio */}
       {cart.length === 0 ? (
         <p>Carrinho vazio</p>
       ) : (
         <>
-          {/* lista de produtos */}
           {cart.map(item => (
-            <div key={item.id} style={{ marginBottom: "15px" }}>
+            <div key={item.id} className="cart-item">
 
-              <h3>{item.title}</h3>
+              {/* imagem do produto */}
+              <img
+                src={item.image || item.thumbnail}
+                alt={item.title}
+              />
 
-              <p>Quantidade: {item.quantidade}</p>
+              <div>
+                <h3>{item.title}</h3>
 
-              <p>Preço: R$ {item.price.toFixed(2)}</p>
+                {/* controle de quantidade */}
+                <div className="qtd">
+                  <button onClick={() => decrease(item.id)}>-</button>
+                  <span>{item.quantidade}</span>
+                  <button onClick={() => increase(item.id)}>+</button>
+                </div>
 
-              <p>
-                Subtotal: R$ {(item.price * item.quantidade).toFixed(2)}
-              </p>
+                <p>Preço: R$ {item.price.toFixed(2)}</p>
 
-              {/* botão remover */}
-              <button onClick={() => removeFromCart(item.id)}>
-                Remover
-              </button>
+                {/* cálculo do subtotal por item */}
+                <p>
+                  Subtotal: R$ {(item.price * item.quantidade).toFixed(2)}
+                </p>
+
+                <button onClick={() => removeFromCart(item.id)}>
+                  Remover
+                </button>
+              </div>
 
             </div>
           ))}
 
-          {/* total */}
+          {/* total geral */}
           <h2>Total: R$ {getTotal().toFixed(2)}</h2>
 
-          {/* limpar carrinho */}
           <button onClick={clearCart}>
             Limpar Carrinho
           </button>

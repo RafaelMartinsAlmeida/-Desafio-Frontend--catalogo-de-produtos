@@ -1,79 +1,363 @@
-body {
+/* ================= RESET ================= */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* HEADER */
-header {
-  background: white;
-  padding: 15px 30px;
+/* ================= BODY ================= */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f6f8;
+  color: #333;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* DARK MODE */
+body.dark {
+  background: #0f1115;
+  color: #e4e6eb;
+}
+
+/* ================= HEADER ================= */
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 20px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
-nav a {
-  margin-left: 15px;
+body.dark .header {
+  background: #16181d;
+}
+
+/* LOGO */
+.logo {
+  font-size: 22px;
+  font-weight: bold;
   text-decoration: none;
-  color: black;
+  color: #0d6efd;
 }
 
-/* GRID */
+/* NAV */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  color: #0d6efd;
+}
+
+body.dark .nav a {
+  color: #cfd3dc;
+}
+
+/* BOTÃO DARK */
+.nav button {
+  border: none;
+  background: #0d6efd;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================= TÍTULO ================= */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* ================= BUSCA ================= */
+input {
+  display: block;
+  margin: 0 auto 30px;
+  padding: 12px 18px;
+  width: 380px;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13,110,253,0.1);
+}
+
+body.dark input {
+  background: #16181d;
+  border: 1px solid #2a2f38;
+  color: white;
+}
+
+/* ================= FILTRO ================= */
+.filtro {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.filtro button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background: #e9ecef;
+  cursor: pointer;
+}
+
+.filtro button:hover {
+  background: #dee2e6;
+}
+
+.filtro .ativo {
+  background: #0d6efd;
+  color: white;
+}
+
+body.dark .filtro button {
+  background: #1e222a;
+  color: #cfd3dc;
+}
+
+body.dark .filtro .ativo {
+  background: #4dabf7;
+}
+
+/* ================= GRID ================= */
 .produtos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 28px;
 }
 
-/* CARD */
+/* ================= ANIMAÇÃO ================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= CARD ================= */
 .card {
   background: white;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  transition: 0.2s;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  animation: fadeUp 0.4s ease;
+  animation-fill-mode: both;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* delay progressivo */
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.2s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.3s; }
+.card:nth-child(7) { animation-delay: 0.35s; }
+.card:nth-child(8) { animation-delay: 0.4s; }
+
+/* HOVER */
 .card:hover {
-  transform: scale(1.03);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
 }
 
+body.dark .card {
+  background: #16181d;
+  border: 1px solid #2a2f38;
+}
+
+body.dark .card:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* REMOVE LINK ROXO */
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card a:visited {
+  color: inherit;
+}
+
+/* IMAGEM */
 .card img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: contain;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
 }
 
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* TÍTULO */
+.card h3 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  height: 40px;
+  overflow: hidden;
+}
+
+body.dark .card h3 {
+  color: #e4e6eb;
+}
+
+.card a:hover h3 {
+  color: #0d6efd;
+}
+
+/* PREÇO */
+.card p {
+  font-size: 20px;
+  font-weight: 600;
+  color: #00a650;
+  margin-bottom: 10px;
+}
+
+/* BOTÃO */
 .card button {
-  margin-top: 10px;
-  padding: 8px;
+  margin-top: auto;
+  background: #3483fa;
   border: none;
-  background: #333;
+  padding: 10px;
+  border-radius: 6px;
   color: white;
+  font-size: 14px;
   cursor: pointer;
-  border-radius: 5px;
+  transition: all 0.2s ease;
 }
 
 .card button:hover {
-  background: #555;
+  transform: translateY(-1px);
+  background: #2968c8;
 }
 
-/* DETALHE */
+.card button:active {
+  transform: scale(0.96);
+}
+
+/* ================= DETALHE ================= */
 .produto-detalhe {
   display: flex;
-  gap: 40px;
-  padding: 20px;
+  gap: 30px;
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+body.dark .produto-detalhe {
+  background: #16181d;
 }
 
 .produto-detalhe img {
   width: 300px;
+  object-fit: contain;
 }
 
+/* ================= CARRINHO ================= */
+.cart-item {
+  display: flex;
+  gap: 15px;
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  align-items: center;
+}
 
-.filtro .ativo {
-  background: #333;
+body.dark .cart-item {
+  background: #16181d;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.cart-item button {
+  background: #fa5252;
   color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
+/* ================= QUANTIDADE ================= */
+.qtd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qtd button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #0d6efd;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ================= SKELETON ================= */
+.skeleton {
+  background: linear-gradient(90deg, #eee, #ddd, #eee);
+  background-size: 200% 100%;
+  animation: loading 1.2s infinite;
+  border-radius: 12px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-card {
+  height: 300px;
+}
+
+body.dark .skeleton {
+  background: linear-gradient(90deg, #2a2a2a, #333, #2a2a2a);
+}
